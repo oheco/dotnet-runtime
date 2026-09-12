@@ -95,6 +95,11 @@ from HarmonyOS PC validation.
 The development host is HarmonyOS PC ARM64, API 26, build 7.0.0.105,
 kernel 1.13. Signed native JIT, NativeAOT and ReadyToRun probes pass, including
 the specific timezone and memory-mapping adaptations. Complete CoreCLR framework acceptance and native ILC/linker execution also
-pass. Native SDK acceptance, clean offline reproduction, release publication
-and formal catalogue installation remain pending. This document is not a release
+pass. The development SDK also passed complete native acceptance, including
+parallel MSBuild, repeated self-contained/AOT publication, JIT/R2R/AOT platform
+behavior and a real proxied NuGet restore/build/run. MSBuild's target-only pipe
+fix uses the configured private temporary directory. NativeAOT publishes carry
+their ICU/OpenSSL dependencies and use uncompressed symbols with host LLVM.
+Clean offline reproduction, release publication and formal catalogue
+installation remain pending. This document is not a release
 acceptance report; consult the final release's recorded checks and hashes.

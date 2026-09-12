@@ -47,6 +47,7 @@ for entry in sorted(source.rglob("*")):
 launcher = "dotnet" if args.kind == "sdk" else "dotnet-runtime"
 (destination / "bin").mkdir(exist_ok=True)
 shutil.copyfile(work / "launch-dotnet.sh", destination / "bin" / launcher)
+shutil.copyfile(work / f"install-{args.kind}.md", destination / "README.openharmony.md")
 for notice in json.loads((work / "licenses.json").read_text()):
     if args.kind not in notice.get("kinds", ["runtime", "sdk"]):
         continue
