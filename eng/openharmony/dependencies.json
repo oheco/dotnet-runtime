@@ -1,0 +1,22 @@
+{
+  "dependencies": [
+    {
+      "name": "openssl",
+      "version": "3.5.8",
+      "url": "https://github.com/openssl/openssl/releases/download/openssl-3.5.8/openssl-3.5.8.tar.gz",
+      "license": "Apache-2.0",
+      "archive": "openssl-3.5.8.tar.gz",
+      "size": 53213818,
+      "sha256": "a8f84a39918ec6415ce765d9b429d313ba97b8143169c172e734b9514464f5b2"
+    },
+    {
+      "name": "icu",
+      "version": "78.3",
+      "url": "https://github.com/unicode-org/icu/releases/download/release-78.3/icu4c-78.3-sources.tgz",
+      "license": "Unicode-3.0",
+      "archive": "icu4c-78.3-sources.tgz",
+      "size": 27977255,
+      "sha256": "3a2e7a47604ba702f345878308e6fefeca612ee895cf4a5f222e7955fabfe0c0"
+    }
+  ]
+}

@@ -8,6 +8,7 @@
 
 #if defined(TARGET_UNIX)
 #include <dlfcn.h>
+#include "pal_libraryloader.h"
 #elif defined(TARGET_WINDOWS)
 #include <windows.h>
 #include <libloaderapi.h>
@@ -283,13 +284,13 @@ static int OpenICULibraries(int majorVer, int minorVer, int subVer, const char* 
     c_static_assert_msg(sizeof("libicui18n.so") + MaxICUVersionStringLength <= sizeof(libicui18nName), "The libicui18nName is too small");
     GetVersionedLibFileName("libicui18n.so", majorVer, minorVer, subVer, versionPrefix, libicui18nName);
 
-    libicuuc = dlopen(libicuucName, RTLD_LAZY);
+    libicuuc = LoadLibraryRelativeToModule(libicuucName, RTLD_LAZY);
     if (libicuuc != NULL)
     {
         char symbolSuffix[SYMBOL_CUSTOM_SUFFIX_SIZE]="";
         if (FindSymbolVersion(majorVer, minorVer, subVer, symbolName, symbolVersion, MaxICUVersionStringLength, symbolSuffix))
         {
-            libicui18n = dlopen(libicui18nName, RTLD_LAZY);
+            libicui18n = LoadLibraryRelativeToModule(libicui18nName, RTLD_LAZY);
         }
         if (libicui18n == NULL)
         {

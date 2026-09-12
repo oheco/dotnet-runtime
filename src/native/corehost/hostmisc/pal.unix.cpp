@@ -634,7 +634,12 @@ pal::string_t trim_quotes(pal::string_t stringToCleanup)
     return stringToCleanup;
 }
 
-#if defined(TARGET_OSX)
+#if defined(TARGET_OPENHARMONY)
+pal::string_t pal::get_current_os_rid_platform()
+{
+    return _X("openharmony");
+}
+#elif defined(TARGET_OSX)
 pal::string_t pal::get_current_os_rid_platform()
 {
     pal::string_t ridOS;

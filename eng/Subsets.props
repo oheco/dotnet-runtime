@@ -37,7 +37,7 @@
     <CoreCLRSupported Condition="'$(_CoreCLRSupportedOS)' == 'true' and '$(_CoreCLRSupportedArch)' == 'true'">true</CoreCLRSupported>
 
     <!-- Determine if the Mono runtime can build/run for the specified target. -->
-    <_MonoSupportedOS>true</_MonoSupportedOS>
+    <_MonoSupportedOS Condition="'$(TargetsOpenHarmony)' != 'true'">true</_MonoSupportedOS>
     <_MonoSupportedArch Condition="!('$(TargetOS)' == 'windows' and '$(TargetArchitecture)' == 'arm64') and !('$(TargetsLinuxMusl)' == 'true' and ('$(TargetArchitecture)' == 'arm' or '$(TargetArchitecture)' == 'arm64')) and !('$(TargetsLinuxBionic)' == 'true' and '$(TargetArchitecture)' == 'arm')">true</_MonoSupportedArch>
     <MonoSupported Condition="'$(_MonoSupportedOS)' == 'true' and '$(_MonoSupportedArch)' == 'true'">true</MonoSupported>
 
@@ -57,7 +57,7 @@
     <SdkToolsSupported Condition="'$(_SdkToolsSupportedOS)' == 'true' and '$(_SdkToolsSupportedArch)' == 'true'">true</SdkToolsSupported>
 
     <_UseNativeAotForComponentsCrossOS Condition="'$(CrossBuild)' == 'true' and '$(_hostArchitecture)' == '$(_targetArchitecture)' and '$(_hostOS)' != 'windows'">true</_UseNativeAotForComponentsCrossOS>
-    <UseNativeAotForComponents Condition="'$(NativeAotSupported)' == 'true' and ('$(TargetOS)' == '$(HostOS)' or '$(_UseNativeAotForComponentsCrossOS)' == 'true') and '$(TargetsLinuxBionic)' != 'true'">true</UseNativeAotForComponents>
+    <UseNativeAotForComponents Condition="'$(NativeAotSupported)' == 'true' and ('$(TargetOS)' == '$(HostOS)' or '$(_UseNativeAotForComponentsCrossOS)' == 'true') and '$(TargetsLinuxBionic)' != 'true' and '$(TargetsOpenHarmony)' != 'true'">true</UseNativeAotForComponents>
   </PropertyGroup>
 
   <PropertyGroup>
@@ -69,6 +69,7 @@
 
   <PropertyGroup>
     <DefaultSubsets>clr+mono+libs+tools+host+packs</DefaultSubsets>
+    <DefaultSubsets Condition="'$(TargetsOpenHarmony)' == 'true'">clr+clr.nativeaotruntime+clr.nativeaotlibs+libs+host+packs</DefaultSubsets>
     <DefaultSubsets Condition="'$(TargetsMobile)' == 'true'">mono+libs+packs</DefaultSubsets>
     <DefaultSubsets Condition="'$(TargetsAndroid)' == 'true' and '$(CoreCLRSupported)' == 'true'">clr+mono+libs+host+packs</DefaultSubsets>
     <DefaultSubsets Condition="'$(TargetsAndroid)' == 'true' and '$(CoreCLRSupported)' != 'true' and '$(NativeAotSupported)' == 'true'">clr.nativeaotruntime+clr.nativeaotlibs+mono+libs+packs</DefaultSubsets>
@@ -150,6 +151,7 @@
     <DefaultPacksSubsets Condition="'$(RuntimeFlavor)' != 'Mono' and '$(ForceBuildMobileManifests)' == 'true'">$(DefaultPacksSubsets)+mono.manifests</DefaultPacksSubsets>
 
     <BootstrapSubsets>host.native+libs.sfx+libs.pretest</BootstrapSubsets>
+    <BootstrapSubsets Condition="'$(TargetsOpenHarmony)' == 'true'">$(BootstrapSubsets)+libs.native</BootstrapSubsets>
     <BootstrapSubsets Condition="'$(UseNativeAotForComponents)' != 'true'">$(BootstrapSubsets)+clr.runtime+clr.corelib</BootstrapSubsets>
     <BootstrapSubsets Condition="'$(UseNativeAotForComponents)' == 'true'">$(BootstrapSubsets)+clr.nativeaotlibs+clr.nativeaotruntime+libs.native</BootstrapSubsets>
 
@@ -653,6 +655,7 @@
         </When>
         <Otherwise>
           <PropertyGroup>
+            <_BuildNativeAOTRuntimePack Condition="'$(TargetsOpenHarmony)' == 'true' and '$(NativeAotSupported)' == 'true'">true</_BuildNativeAOTRuntimePack>
             <_BuildCoreCLRRuntimePack Condition="'$(RuntimeFlavor)' == 'CoreCLR' and '$(CoreCLRSupported)' == 'true'">true</_BuildCoreCLRRuntimePack>
             <_BuildMonoRuntimePack Condition="'$(RuntimeFlavor)' == 'Mono' and '$(MonoSupported)' == 'true'">true</_BuildMonoRuntimePack>
             <_BuildHostPack Condition="'$(RuntimeFlavor)' == '$(PrimaryRuntimeFlavor)' and '$(TargetsMobile)' != 'true'">true</_BuildHostPack>

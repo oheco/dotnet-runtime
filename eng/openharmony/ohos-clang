@@ -1,0 +1,9 @@
+#!/bin/sh
+set -eu
+ohos_probe_ndk=${OHOS_CROSS_NDK:-/tmp/oheco-dotnet-ndk-verified}
+exec clang --target=aarch64-linux-ohos -D__MUSL__ \
+    --sysroot="$ohos_probe_ndk/sysroot" \
+    -resource-dir "$ohos_probe_ndk/clang/15.0.4" \
+    -L"$ohos_probe_ndk/aarch64-linux-ohos" \
+    -fuse-ld=lld -rtlib=compiler-rt -fno-emulated-tls \
+    -Qunused-arguments "$@"

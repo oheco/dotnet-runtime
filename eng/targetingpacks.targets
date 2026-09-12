@@ -90,6 +90,28 @@
                       Condition="'$(UseLocalAppHostPack)' == 'true' and '@(KnownAppHostPack->AnyHaveMetadataValue('TargetFramework', '$(NetCoreAppCurrent)'))' != 'true'" />
   </ItemGroup>
 
+  <!-- The bootstrap SDK has no knowledge of this platform. Update its existing
+       .NET 10 entries as well as the fallback entries created above. -->
+  <ItemGroup Condition="'$(TargetsOpenHarmony)' == 'true'">
+    <KnownFrameworkReference Update="@(KnownFrameworkReference)">
+      <RuntimePackRuntimeIdentifiers Condition="'%(KnownFrameworkReference.TargetFramework)' == '$(NetCoreAppCurrent)' and '%(KnownFrameworkReference.Identity)' == '$(LocalFrameworkOverrideName)'">%(RuntimePackRuntimeIdentifiers);openharmony-arm64</RuntimePackRuntimeIdentifiers>
+    </KnownFrameworkReference>
+    <KnownRuntimePack Update="@(KnownRuntimePack)">
+      <RuntimePackRuntimeIdentifiers Condition="'%(KnownRuntimePack.TargetFramework)' == '$(NetCoreAppCurrent)' and '%(KnownRuntimePack.RuntimePackLabels)' == 'NativeAOT'">%(RuntimePackRuntimeIdentifiers);openharmony-arm64</RuntimePackRuntimeIdentifiers>
+    </KnownRuntimePack>
+    <KnownAppHostPack Update="@(KnownAppHostPack)">
+      <AppHostRuntimeIdentifiers Condition="'%(KnownAppHostPack.TargetFramework)' == '$(NetCoreAppCurrent)'">%(AppHostRuntimeIdentifiers);openharmony-arm64</AppHostRuntimeIdentifiers>
+    </KnownAppHostPack>
+    <KnownILCompilerPack Update="@(KnownILCompilerPack)">
+      <ILCompilerPortableRuntimeIdentifiers Condition="'%(KnownILCompilerPack.TargetFramework)' == '$(NetCoreAppCurrent)'">%(ILCompilerPortableRuntimeIdentifiers);openharmony-arm64</ILCompilerPortableRuntimeIdentifiers>
+      <ILCompilerRuntimeIdentifiers Condition="'%(KnownILCompilerPack.TargetFramework)' == '$(NetCoreAppCurrent)'">%(ILCompilerRuntimeIdentifiers);openharmony-arm64</ILCompilerRuntimeIdentifiers>
+    </KnownILCompilerPack>
+    <KnownCrossgen2Pack Update="@(KnownCrossgen2Pack)">
+      <Crossgen2PortableRuntimeIdentifiers Condition="'%(KnownCrossgen2Pack.TargetFramework)' == '$(NetCoreAppCurrent)'">%(Crossgen2PortableRuntimeIdentifiers);openharmony-arm64</Crossgen2PortableRuntimeIdentifiers>
+      <Crossgen2RuntimeIdentifiers Condition="'%(KnownCrossgen2Pack.TargetFramework)' == '$(NetCoreAppCurrent)'">%(Crossgen2RuntimeIdentifiers);openharmony-arm64</Crossgen2RuntimeIdentifiers>
+    </KnownCrossgen2Pack>
+  </ItemGroup>
+
   <!-- Use local targeting/runtime pack for NetCoreAppCurrent. -->
   <Target Name="UpdateLocalTargetingAndRuntimePack"
           Condition="'$(UseLocalTargetingRuntimePack)' == 'true'"

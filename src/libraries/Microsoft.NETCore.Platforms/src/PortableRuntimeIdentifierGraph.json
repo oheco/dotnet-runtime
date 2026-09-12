@@ -320,6 +320,8 @@
           "ios-x64"
         ]
       },
+      "openharmony": { "#import": ["unix"] },
+      "openharmony-arm64": { "#import": ["openharmony", "unix-arm64"] },
       "osx": {
         "#import": [
           "unix"

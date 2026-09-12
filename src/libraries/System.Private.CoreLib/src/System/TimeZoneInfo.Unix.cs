@@ -18,6 +18,8 @@ namespace System
     {
 #if TARGET_ILLUMOS || TARGET_SOLARIS
         private const string DefaultTimeZoneDirectory = "/usr/share/lib/zoneinfo/";
+#elif TARGET_OPENHARMONY
+        private const string DefaultTimeZoneDirectory = "/system/etc/zoneinfo/";
 #else
         private const string DefaultTimeZoneDirectory = "/usr/share/zoneinfo/";
 #endif

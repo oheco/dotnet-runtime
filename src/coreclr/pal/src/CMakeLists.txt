@@ -4,7 +4,7 @@ if(CLR_CMAKE_TARGET_APPLE OR CLR_CMAKE_TARGET_FREEBSD OR CLR_CMAKE_TARGET_HAIKU)
   set(CLR_CMAKE_USE_SYSTEM_LIBUNWIND 1)
 endif(CLR_CMAKE_TARGET_APPLE OR CLR_CMAKE_TARGET_FREEBSD OR CLR_CMAKE_TARGET_HAIKU)
 
-if(NOT DEFINED ENV{ROOTFS_DIR})
+if(NOT DEFINED ENV{ROOTFS_DIR} AND NOT CLR_CMAKE_TARGET_OPENHARMONY)
   include_directories(SYSTEM /usr/local/include)
 elseif (CLR_CMAKE_TARGET_FREEBSD)
   include_directories(SYSTEM $ENV{ROOTFS_DIR}/usr/local/include)
@@ -303,18 +303,18 @@ endif(CLR_CMAKE_TARGET_HAIKU)
 
 if(CLR_CMAKE_TARGET_LINUX)
   # On Android, we don't need to link with gcc_s, pthread and rt
-  if(NOT CLR_CMAKE_TARGET_ANDROID)
+  if(NOT CLR_CMAKE_TARGET_ANDROID AND NOT CLR_CMAKE_TARGET_OPENHARMONY)
     target_link_libraries(coreclrpal
       PUBLIC
       gcc_s
       pthread
       rt
     )
-  else(NOT CLR_CMAKE_TARGET_ANDROID)
+  else()
     target_link_libraries(coreclrpal
       PUBLIC
       ${ANDROID_GLOB})
-  endif(NOT CLR_CMAKE_TARGET_ANDROID)
+  endif()
 
   target_link_libraries(coreclrpal
     PUBLIC

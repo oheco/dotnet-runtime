@@ -80,6 +80,11 @@ add_executable_clr(ilasm
   ${ILASM_RESOURCES}
 )
 
+if(CLR_CMAKE_TARGET_OPENHARMONY)
+  find_package(OpenSSL REQUIRED)
+  target_include_directories(ilasm PRIVATE ${OPENSSL_INCLUDE_DIR})
+endif()
+
 set(ILASM_LINK_LIBRARIES
   utilcodestaticnohost
   mscorpe

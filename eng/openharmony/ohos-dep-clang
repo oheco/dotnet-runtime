@@ -1,0 +1,5 @@
+#!/bin/sh
+# Bundled dependencies resolve their DT_NEEDED libraries beside themselves.
+set -eu
+dep_tools=$(CDPATH= cd -- "$(dirname -- "$0")" && pwd)
+exec "$dep_tools/ohos-clang" '-Wl,-rpath,$ORIGIN' "$@"

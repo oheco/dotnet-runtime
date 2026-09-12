@@ -318,4 +318,7 @@
     <PackageReference Include="Microsoft.DotNet.Build.Tasks.Templating" Version="$(MicrosoftDotNetBuildTasksTemplatingVersion)" />
   </ItemGroup>
 
+  <ItemGroup Condition="'$(TargetsOpenHarmony)' == 'true'">
+    <PlatformManifestFileEntry Include="libcrypto.so.3;libssl.so.3;libicuuc.so.78;libicui18n.so.78;libicudata.so.78;libc++_shared.so" IsNative="true" />
+  </ItemGroup>
 </Project>

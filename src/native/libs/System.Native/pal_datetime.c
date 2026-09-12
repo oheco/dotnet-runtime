@@ -13,6 +13,9 @@
 #include <sys/system_properties.h>
 #endif
 #include <time.h>
+#ifdef TARGET_OPENHARMONY
+#include <dlfcn.h>
+#endif
 
 static const int64_t TICKS_PER_SECOND = 10000000; /* 10^7 */
 #if HAVE_CLOCK_REALTIME
@@ -60,6 +63,33 @@ char* SystemNative_GetDefaultTimeZone(void)
     {
         return NULL;
     }
+}
+#elif defined(TARGET_OPENHARMONY)
+char* SystemNative_GetDefaultTimeZone(void)
+{
+    const char* timezone = getenv("TZ");
+    if (timezone != NULL)
+    {
+        return strdup(timezone);
+    }
+
+    // GetParameter is provided by OpenHarmony's system parameter service.
+    // Load it dynamically so an unavailable service retains the UTC fallback.
+    void* library = dlopen("libbegetutil.z.so", RTLD_NOW | RTLD_LOCAL);
+    if (library == NULL)
+    {
+        return NULL;
+    }
+    typedef int (*GetParameterFn)(const char*, const char*, char*, unsigned int);
+    GetParameterFn getParameter = (GetParameterFn)dlsym(library, "GetParameter");
+    char value[128] = {0};
+    char* result = NULL;
+    if (getParameter != NULL && getParameter("persist.time.timezone", "", value, sizeof(value)) > 0)
+    {
+        result = strdup(value);
+    }
+    dlclose(library);
+    return result;
 }
 #elif !defined(__APPLE__)
 char* SystemNative_GetDefaultTimeZone(void)

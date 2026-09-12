@@ -28,6 +28,8 @@ namespace System
         "TVOS"
 #elif TARGET_ANDROID
         "ANDROID"
+#elif TARGET_OPENHARMONY
+        "OPENHARMONY"
 #elif TARGET_LINUX
         "LINUX"
 #elif TARGET_FREEBSD
@@ -129,6 +131,8 @@ namespace System
             || platform.Equals("MACOS", StringComparison.OrdinalIgnoreCase)
 #elif TARGET_MACCATALYST
             || platform.Equals("IOS", StringComparison.OrdinalIgnoreCase)
+#elif TARGET_OPENHARMONY
+            || platform.Equals("LINUX", StringComparison.OrdinalIgnoreCase)
 #endif
             ;
         }

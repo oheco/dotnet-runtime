@@ -105,6 +105,8 @@
 
     <ItemGroup Condition="'$(RuntimeFlavor)' == 'CoreCLR' and '$(BuildNativeAOTRuntimePack)' != 'true'">
       <RuntimeFiles Include="$(CoreCLRSharedFrameworkDir)*.*" />
+      <RuntimeFiles Remove="$(CoreCLRSharedFrameworkDir)libclrinterpreter.so;$(CoreCLRSharedFrameworkDir)libclrinterpreter.so.dbg"
+                    Condition="'$(TargetsOpenHarmony)' == 'true' and '$(CoreCLRConfiguration)' == 'Release'" />
       <RuntimeFiles Condition="'$(PgoInstrument)' == 'true'" Include="$(CoreCLRSharedFrameworkDir)PGD/*" />
       <CoreCLRCrossTargetFiles Condition="'$(CoreCLRCrossTargetComponentDir)' != ''" Include="$(CoreCLRCrossTargetComponentDir)*.*" IsNative="true" />
       <RuntimeFiles>
@@ -210,6 +212,8 @@
         $(LibrariesNativeArtifactsPath)*.pdb"
         IsNative="true"
         Exclude="@(ExcludeNativeLibrariesRuntimeFiles)" />
+      <LibrariesRuntimeFiles Include="$(LibrariesNativeArtifactsPath)*.so.*" Exclude="$(LibrariesNativeArtifactsPath)*.dbg;$(LibrariesNativeArtifactsPath)*.so;@(ExcludeNativeLibrariesRuntimeFiles)"
+                             IsNative="true" Condition="'$(TargetsOpenHarmony)' == 'true'" />
       <LibrariesRuntimeFiles Condition="'$(TargetOS)' == 'android'"
                              Include="
         $(LibrariesNativeArtifactsPath)*.dex;

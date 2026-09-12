@@ -23,6 +23,7 @@ The .NET Foundation licenses this file to you under the MIT license.
     <LinkerFlavor Condition="'$(LinkerFlavor)' == '' and '$(_targetOS)' == 'freebsd'">lld</LinkerFlavor>
     <LinkerFlavor Condition="'$(LinkerFlavor)' == '' and '$(_linuxLibcFlavor)' == 'bionic'">lld</LinkerFlavor>
     <LinkerFlavor Condition="'$(LinkerFlavor)' == '' and '$(_targetOS)' == 'android'">lld</LinkerFlavor>
+    <LinkerFlavor Condition="'$(LinkerFlavor)' == '' and '$(_originalTargetOS)' == 'openharmony'">lld</LinkerFlavor>
     <LinkerFlavor Condition="'$(LinkerFlavor)' == '' and '$(_targetOS)' == 'linux'">bfd</LinkerFlavor>
     <IlcDefaultStackSize Condition="'$(IlcDefaultStackSize)' == '' and '$(_linuxLibcFlavor)' == 'musl'">1572864</IlcDefaultStackSize>
   </PropertyGroup>
@@ -47,6 +48,7 @@ The .NET Foundation licenses this file to you under the MIT license.
       <CrossCompileArch Condition="$(CrossCompileRid.EndsWith('-arm'))">armv7</CrossCompileArch>
 
       <CrossCompileAbi>gnu</CrossCompileAbi>
+      <CrossCompileAbi Condition="$(CrossCompileRid.StartsWith('openharmony-'))">ohos</CrossCompileAbi>
       <CrossCompileAbi Condition="$(CrossCompileRid.StartsWith('linux-bionic-')) or $(CrossCompileRid.StartsWith('android-'))">android21</CrossCompileAbi>
       <CrossCompileAbi Condition="$(CrossCompileRid.StartsWith('linux-musl-')) or $(CrossCompileRid.StartsWith('alpine-'))">musl</CrossCompileAbi>
       <CrossCompileAbi Condition="'$(CrossCompileRid)' == 'linux-arm'">gnueabihf</CrossCompileAbi>
@@ -140,7 +142,7 @@ The .NET Foundation licenses this file to you under the MIT license.
       <NetCoreAppNativeLibrary Include="System.Native" />
       <NetCoreAppNativeLibrary Include="System.Globalization.Native" Condition="'$(StaticICULinking)' != 'true' and '$(InvariantGlobalization)' != 'true'" />
       <NetCoreAppNativeLibrary Include="System.IO.Compression.Native" />
-      <NetCoreAppNativeLibrary Include="System.Net.Security.Native" Condition="!$(_targetOS.StartsWith('tvos')) and '$(_linuxLibcFlavor)' != 'bionic'" />
+      <NetCoreAppNativeLibrary Include="System.Net.Security.Native" Condition="!$(_targetOS.StartsWith('tvos')) and '$(_linuxLibcFlavor)' != 'bionic' and '$(_originalTargetOS)' != 'openharmony'" />
       <NetCoreAppNativeLibrary Include="System.Security.Cryptography.Native.Apple" Condition="'$(_IsApplePlatform)' == 'true'" />
       <!-- No OpenSSL on Apple platforms or Android -->
       <NetCoreAppNativeLibrary Include="System.Security.Cryptography.Native.OpenSsl" Condition="'$(StaticOpenSslLinking)' != 'true' and '$(_IsApplePlatform)' != 'true' and '$(_targetOS)' != 'android'" />
@@ -210,7 +212,8 @@ The .NET Foundation licenses this file to you under the MIT license.
     </ItemGroup>
 
     <ItemGroup>
-      <NativeSystemLibrary Include="stdc++" Condition="'$(LinkStandardCPlusPlusLibrary)' == 'true'" />
+      <NativeSystemLibrary Include="stdc++" Condition="'$(LinkStandardCPlusPlusLibrary)' == 'true' and '$(_originalTargetOS)' != 'openharmony'" />
+      <NativeSystemLibrary Include="c++_shared" Condition="'$(LinkStandardCPlusPlusLibrary)' == 'true' and '$(_originalTargetOS)' == 'openharmony'" />
       <NativeSystemLibrary Include="dl" />
       <NativeSystemLibrary Include="objc" Condition="'$(_IsApplePlatform)' == 'true'" />
       <NativeSystemLibrary Include="swiftCore" Condition="'$(_IsApplePlatform)' == 'true'" />
@@ -229,6 +232,8 @@ The .NET Foundation licenses this file to you under the MIT license.
       <LinkerArg Include="-gz=zlib" Condition="'$(CompressSymbols)' != 'false'" />
       <LinkerArg Include="-fuse-ld=$(LinkerFlavor)" Condition="'$(LinkerFlavor)' != ''" />
       <LinkerArg Include="@(NativeLibrary)" />
+      <!-- Unix Exec invokes the shell: retain the literal ELF origin token. -->
+      <LinkerArg Include="-Wl,-rpath,'$ORIGIN'" Condition="'$(_originalTargetOS)' == 'openharmony'" />
       <LinkerArg Include="--sysroot=&quot;$(SysRoot)&quot;" Condition="'$(SysRoot)' != '' and '$(_IsApplePlatform)' != 'true'" />
       <LinkerArg Include="-isysroot &quot;$(SysRoot)&quot;" Condition="'$(SysRoot)' != '' and '$(_IsApplePlatform)' == 'true'" />
       <LinkerArg Include="--target=$(TargetTriple)" Condition="'$(TargetTriple)' != ''" />

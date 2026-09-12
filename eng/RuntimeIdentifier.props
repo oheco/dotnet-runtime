@@ -50,10 +50,11 @@
     <Targetsillumos Condition="'$(TargetOS)' == 'illumos'">true</Targetsillumos>
     <TargetsSolaris Condition="'$(TargetOS)' == 'solaris'">true</TargetsSolaris>
     <TargetsHaiku Condition="'$(TargetOS)' == 'haiku'">true</TargetsHaiku>
-    <TargetsLinux Condition="'$(TargetOS)' == 'linux' or '$(TargetOS)' == 'android'">true</TargetsLinux>
+    <TargetsLinux Condition="'$(TargetOS)' == 'linux' or '$(TargetOS)' == 'android' or '$(TargetOS)' == 'openharmony'">true</TargetsLinux>
     <TargetsLinuxBionic Condition="'$(PortableOS)' == 'linux-bionic'">true</TargetsLinuxBionic>
     <TargetsLinuxMusl Condition="'$(PortableOS)' == 'linux-musl'">true</TargetsLinuxMusl>
-    <TargetsLinuxGlibc Condition="'$(TargetsLinux)' == 'true' and '$(TargetsLinuxMusl)' != 'true' and '$(TargetsLinuxBionic)' != 'true'">true</TargetsLinuxGlibc>
+    <TargetsOpenHarmony Condition="'$(TargetOS)' == 'openharmony'">true</TargetsOpenHarmony>
+    <TargetsLinuxGlibc Condition="'$(TargetsLinux)' == 'true' and '$(TargetsLinuxMusl)' != 'true' and '$(TargetsLinuxBionic)' != 'true' and '$(TargetsOpenHarmony)' != 'true'">true</TargetsLinuxGlibc>
     <TargetsNetBSD Condition="'$(TargetOS)' == 'netbsd'">true</TargetsNetBSD>
     <TargetsOSX Condition="'$(TargetOS)' == 'osx'">true</TargetsOSX>
     <TargetsMacCatalyst Condition="'$(TargetOS)' == 'maccatalyst'">true</TargetsMacCatalyst>
@@ -69,5 +70,9 @@
   </PropertyGroup>
   <PropertyGroup>
     <_ImportedRuntimeIdentifierProps>true</_ImportedRuntimeIdentifierProps>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(TargetsOpenHarmony)' == 'true'">
+    <!-- Bootstrap SDKs predate this RID; use the graph from the target sources. -->
+    <RuntimeIdentifierGraphPath>$(MSBuildThisFileDirectory)../src/libraries/Microsoft.NETCore.Platforms/src/PortableRuntimeIdentifierGraph.json</RuntimeIdentifierGraphPath>
   </PropertyGroup>
 </Project>

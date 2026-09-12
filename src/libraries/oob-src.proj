@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>$(NetCoreAppCurrent)-$(TargetOS)</TargetFramework>
+    <TargetFramework Condition="'$(TargetsOpenHarmony)' == 'true'">$(NetCoreAppCurrent)-linux</TargetFramework>
     <!-- Filter ProjectReferences to build the best matching target framework only. -->
     <FilterTraversalProjectReferences>true</FilterTraversalProjectReferences>
     <!-- In non-official builds, build RID-specific projects -->

@@ -193,6 +193,12 @@ namespace System
         */
         private sealed class AndroidTzData
         {
+#if TARGET_OPENHARMONY
+            // OpenHarmony omits Android's obsolete four-byte raw UTC offset field.
+            private const int IndexEntrySize = 48;
+#else
+            private const int IndexEntrySize = 52;
+#endif
             private string[] _ids;
             private int[] _byteOffsets;
             private int[] _lengths;
@@ -227,10 +233,15 @@ namespace System
                 // On Android, time zone data is found in tzdata
                 // Based on https://github.com/mono/mono/blob/main/mcs/class/corlib/System/TimeZoneInfo.Android.cs
                 // Also follows the locations found at the bottom of https://github.com/aosp-mirror/platform_bionic/blob/master/libc/tzcode/bionic.cpp
+#if TARGET_OPENHARMONY
+                // OpenHarmony uses indexed tzdata with a shorter index entry.
+                ReadOnlySpan<string> tzFileDirList = [ DefaultTimeZoneDirectory ];
+#else
                 ReadOnlySpan<string> tzFileDirList = [ GetApexTimeDataRoot() + "/etc/tz/", // Android 10+, TimeData module where the updates land
                                                        GetApexRuntimeRoot() + "/etc/tz/", // Android 10+, Fallback location if the above isn't found or corrupted
                                                        Environment.GetEnvironmentVariable("ANDROID_DATA") + "/misc/zoneinfo/",
                                                        Environment.GetEnvironmentVariable("ANDROID_ROOT") + DefaultTimeZoneDirectory ];
+#endif
                 foreach (var tzFileDir in tzFileDirList)
                 {
                     string tzFilePath = Path.Combine(tzFileDir, TimeZoneFileName);
@@ -376,7 +387,7 @@ namespace System
             private void ReadIndex(string tzFileDir, Stream fs, int indexOffset, int dataOffset)
             {
                 int indexSize = dataOffset - indexOffset;
-                const int entrySize = 52; // Data entry size
+                const int entrySize = IndexEntrySize; // Data entry size
                 int entryCount = indexSize / entrySize;
                 _byteOffsets = new int[entryCount];
                 _ids = new string[entryCount];
@@ -427,7 +438,7 @@ namespace System
 
             private void LoadEntryAt(Stream fs, long position, out string id, out int byteOffset, out int length)
             {
-                const int size = 52; // data entry size
+                const int size = IndexEntrySize; // data entry size
                 Span<byte> entryBuffer = stackalloc byte[size];
 
                 ReadTzDataIntoBuffer(fs, position, entryBuffer);

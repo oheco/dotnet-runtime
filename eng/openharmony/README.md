@@ -1,0 +1,111 @@
+# OpenHarmony build and acceptance kit
+
+The source already contains the platform adaptation. These helpers use the
+normal runtime/SDK build graphs and record the extra target inputs. A complete
+fresh release build is still being validated; individual successful development
+builds do not establish a finished release.
+
+## Build environment and inputs
+
+The current build machine is Linux ARM64 with Bash, Python 3.11+, Git,
+Clang/LLD/LLVM tools 17, CMake 3.27+, Ninja, Make, Perl, tar and curl.
+The HarmonyOS PC host needs zsh, its LLVM tools and `binary-sign-tool` on PATH.
+Configuration executables are signed and run on that real host, using `zshc`.
+`run-on-host.py` requires a shared log directory and these settings when the
+default workspace mapping does not apply:
+
+```sh
+export OHOS_ZSHC=/path/to/zshc
+export OHOS_LINUX_SHARED_ROOT=/mnt/linux_share
+export OHOS_HOST_SHARED_ROOT=/storage/Users/currentUser/dev
+export OHOS_HOST_PROBE_LOG_ROOT=/mnt/linux_share/ohos/build-logs/dotnet-probes
+```
+
+`base-inputs.json` fixes SDK/dependency archive URLs, versions, sizes, hashes
+and licenses. Downloading is an explicit preparation phase:
+
+```sh
+export DOTNET_OHOS_DOWNLOADS=/path/to/fixed-downloads
+export DOTNET_OHOS_PROXY=socks5h://127.0.0.1:10808
+python3 fetch-inputs.py
+python3 verify-inputs.py
+python3 prepare-ndk.py /path/to/new-ohos-ndk
+```
+
+`fetch-inputs.py` never falls back to a direct connection. Build tools that use
+.NET's proxy support take `socks5://` instead of curl's `socks5h://` spelling.
+Set `DOTNET_OHOS_PROXY` accordingly before using the build shell helpers.
+
+Extract the fixed Linux .NET SDK archives to separate bootstrap directories.
+Runtime builds use 10.0.110; SDK builds use 10.0.302. Run
+`prepare-tool-runtimes.py <sdk-bootstrap-root>` to install the pinned 6–9
+frameworks needed by upstream SDK build/test tooling. They are build inputs
+and are excluded from the target product.
+
+`nuget-inputs-current.json` records the 699 captured upstream NuGet inputs
+and their licenses. A prepared cache can be verified and staged without
+network access:
+
+```sh
+python3 nuget-inputs.py stage /path/to/prepared-nuget-cache \
+  nuget-inputs-current.json --destination /path/to/local-feed
+```
+
+The manifest is an inventory of build dependencies, not an inventory of files
+shipped in the SDK. Keep the bootstrap input feed separate from target-built
+packages. NuGet caches containing an earlier locally built package of the same
+version must also be kept separate from a new build's cache.
+
+## Build order
+
+1. Set `OHOS_CROSS_NDK`, `OHOS_DEP_PREFIX` and `DOTNET_OHOS_DEPS_BUILD` to new
+   prepared/build directories. Run `build-deps.sh openssl` and
+   `build-deps.sh icu`. Both dependency libraries retain adjacent-library
+   RUNPATHs; ICU data retains the target CRT platform note.
+2. Set `DOTNET_INSTALL_DIR`, `NUGET_PACKAGES`, `DOTNET_CLI_HOME` and
+   `DOTNET_OHOS_OFFLINE_FEED`. `build-runtime-target.sh <runtime-source> <subset>`
+   invokes the target build with the real-host CMake probe runner.
+3. Build `bootstrap`, target NativeAOT runtime/libraries and Linux-host cross
+   tools. Build the in-build compilers and target compiler publishes using
+   `UseBootstrap=true`, then generate the ReadyToRun CoreLib and `packs.product`.
+4. After any native runtime change, refresh `libs.pretest`, then
+   `Build.proj /t:SetupBootstrapLayout /p:Subset=bootstrap`, then the target ILC
+   and crossgen2 publishes. Recreate compiler archives before assembling a new
+   SDK feed. Incremental pack timestamps can otherwise retain an old archive.
+5. `prepare-sdk-feed.py --bootstrap-feed <feed> --runtime-packages
+   <runtime-artifacts/packages/Release> --runtime-archive <combined-runtime-tar>
+   --output <new-sdk-feed>` verifies the runtime/compiler CoreCLR hashes and
+   combines the nine source-built target packs with fixed build inputs.
+6. With the SDK bootstrap selected, run
+   `build-sdk-target.sh <sdk-source> <new-sdk-feed>`. The completed layout is
+   `artifacts/bin/redist/Release/dotnet-installer` in the SDK source tree.
+
+Detailed release orchestration and a fresh-build validation report will be
+added after the end-to-end native SDK checks pass.
+
+## Native acceptance and packaging
+
+`stage-install.py <layout> <new-shared-directory> --kind sdk` copies a complete
+SDK layout, adds its launcher and verifies/copies dependency notices. Use
+`--kind runtime` for an extracted combined runtime archive. Wait for this
+operation to finish before signing.
+
+On the host, run `zsh sign-tree.zsh <staged-tree> <new-sign-log-directory>`,
+then `chmod +x <staged-tree>/bin/dotnet`. For the runtime-only package the
+launcher name is `dotnet-runtime`.
+
+`zsh accept-sdk.zsh <signed-sdk> <new-app-private-directory>` checks native
+project creation, restore/build/run, repeated apphost replacement,
+self-contained/ReadyToRun/NativeAOT publish and broad runtime behavior. Its
+network checks use the host proxy (`socks5://172.16.105.2:10808` by default).
+
+`verify-elf-layout.py <tree>` audits signatures, architecture and accidental
+foreign native binaries. Before signing, use `--allow-unsigned`.
+`package-tree.py --help` describes archive creation: execution modes are
+normalized while signed bytes and contained links are preserved. The extracted
+archive must also be tested from a relocated path on the native host.
+
+The SDK owns the `dotnet` command; the standalone runtime owns `dotnet-runtime`.
+Both launch their own root muxer and establish a usable application-private
+temporary directory. Set `DOTNET_OHOS_TMPDIR` when the host's application layout
+differs. Consult [PORTING.md](PORTING.md) for the tested host and API limits.

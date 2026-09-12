@@ -508,6 +508,9 @@ int32_t SystemNative_GetNetworkInterfaces(int32_t * interfaceCount, NetworkInter
                         {
 #ifdef TARGET_ANDROID
                             nii->Speed = (int64_t)ecmd.speed;
+#elif defined(TARGET_OPENHARMONY)
+                            // The SDK exposes the ABI fields without the Linux inline helper.
+                            nii->Speed = (int64_t)(((uint32_t)ecmd.speed_hi << 16) | ecmd.speed);
 #else
                             nii->Speed = (int64_t)ethtool_cmd_speed(&ecmd);
 #endif

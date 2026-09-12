@@ -4,6 +4,7 @@
 
   <PropertyGroup>
     <TargetFramework>$(NetCoreAppCurrent)-$(TargetOS)</TargetFramework>
+    <TargetFramework Condition="'$(TargetsOpenHarmony)' == 'true'">$(NetCoreAppCurrent)-unix</TargetFramework>
     <EnableDefaultItems>true</EnableDefaultItems>
     <!-- By default make shims compile against reference assemblies. -->
     <CompileUsingReferenceAssemblies>true</CompileUsingReferenceAssemblies>

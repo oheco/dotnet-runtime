@@ -9,7 +9,9 @@
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(AotOrSingleFile)' == 'true' and '$(UseNativeAotForComponents)' != 'true'">
-    <PublishSingleFile>true</PublishSingleFile>
+    <!-- Keep the compiler's CoreCLR and native libraries as individually signed files. -->
+    <PublishSingleFile Condition="'$(TargetsOpenHarmony)' != 'true'">true</PublishSingleFile>
+    <PublishSingleFile Condition="'$(TargetsOpenHarmony)' == 'true'">false</PublishSingleFile>
   </PropertyGroup>
 
   <PropertyGroup>

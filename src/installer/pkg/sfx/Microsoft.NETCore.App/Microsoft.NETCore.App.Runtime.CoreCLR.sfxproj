@@ -40,8 +40,8 @@
   <Target Name="ResolveReadyToRunCompilers" DependsOnTargets="ResolveRuntimeFilesFromLocalBuild">
     <PropertyGroup>
       <Crossgen2Path>$([MSBuild]::NormalizePath('$(Crossgen2InBuildDir)', 'crossgen2$(ExeSuffix)'))</Crossgen2Path>
-      <_CrossGenTargetOS Condition="'$(TargetsAndroid)' != 'true'">$(TargetOS)</_CrossGenTargetOS>
-      <_CrossGenTargetOS Condition="'$(TargetsAndroid)' == 'true'">linux</_CrossGenTargetOS>
+      <_CrossGenTargetOS Condition="'$(TargetsAndroid)' != 'true' and '$(TargetsOpenHarmony)' != 'true'">$(TargetOS)</_CrossGenTargetOS>
+      <_CrossGenTargetOS Condition="'$(TargetsAndroid)' == 'true' or '$(TargetsOpenHarmony)' == 'true'">linux</_CrossGenTargetOS>
     </PropertyGroup>
 
     <ItemGroup>

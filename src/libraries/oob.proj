@@ -2,6 +2,7 @@
 
   <PropertyGroup>
     <TargetFramework>$(NetCoreAppCurrent)-$(TargetOS)</TargetFramework>
+    <TargetFramework Condition="'$(TargetsOpenHarmony)' == 'true'">$(NetCoreAppCurrent)-linux</TargetFramework>
     <!-- By default, build the NetCoreAppCurrent vertical only. -->
     <BuildTargetFramework Condition="'$(BuildAllConfigurations)' != 'true'">$(NetCoreAppCurrent)</BuildTargetFramework>
   </PropertyGroup>

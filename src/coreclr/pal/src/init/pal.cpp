@@ -1189,6 +1189,26 @@ static BOOL INIT_SharedFilesPath(void)
     }
 #endif // __APPLE__
 
+#ifdef TARGET_OPENHARMONY
+    // Use the same writable temporary directory as managed code and diagnostics.
+    const char* tempPath = getenv("TMPDIR");
+    if (tempPath != nullptr && tempPath[0] != '\0')
+    {
+        if (!gSharedFilesPath->Set(tempPath, strlen(tempPath)) ||
+            (tempPath[strlen(tempPath) - 1] != '/' && !gSharedFilesPath->Append("/")))
+        {
+            SetLastError(ERROR_NOT_ENOUGH_MEMORY);
+            return FALSE;
+        }
+        if (gSharedFilesPath->GetCount() + SHARED_MEMORY_MAX_FILE_PATH_CHAR_COUNT + 1 > MAX_LONGPATH)
+        {
+            SetLastError(ERROR_FILENAME_EXCED_RANGE);
+            return FALSE;
+        }
+        return TRUE;
+    }
+#endif
+
     // If we are here, then we are not in sandbox mode, resort to TEMP_DIRECTORY_PATH as shared files path
     return gSharedFilesPath->Set(TEMP_DIRECTORY_PATH);
 

@@ -7,7 +7,7 @@ initTargetDistroRid()
     local passedRootfsDir=""
 
     # Only pass ROOTFS_DIR if cross is specified and the target platform is not Darwin that doesn't use rootfs
-    if [[ "$__CrossBuild" == 1 && "$platform" != "darwin" ]]; then
+    if [[ "$__CrossBuild" == 1 && "$platform" != "darwin" && "$__TargetOS" != "openharmony" ]]; then
         passedRootfsDir="$ROOTFS_DIR"
     fi
 
@@ -118,6 +118,13 @@ build_native()
             echo "Error: Unknown Android architecture $hostArch."
             exit 1
         fi
+    elif [[ "$targetOS" == openharmony ]]; then
+        if [[ "$hostArch" != arm64 || ! -f "${OHOS_CMAKE_TOOLCHAIN:-}" ]]; then
+            echo "OpenHarmony requires arm64 and OHOS_CMAKE_TOOLCHAIN pointing to the prepared toolchain."
+            exit 1
+        fi
+        cmakeArgs="-DCMAKE_TOOLCHAIN_FILE=$OHOS_CMAKE_TOOLCHAIN $cmakeArgs"
+        __Compiler="default"
     elif [[ "$targetOS" == iossimulator ]]; then
         cmakeArgs="-C $__RepoRootDir/eng/native/tryrun_ios_tvos.cmake $cmakeArgs"
 
@@ -562,7 +569,7 @@ if [[ "$__CrossBuild" == 1 ]]; then
     CROSSCOMPILE=1
     export CROSSCOMPILE
     # Darwin that doesn't use rootfs
-    if [[ -z "$ROOTFS_DIR" && "$platform" != "darwin" ]]; then
+    if [[ -z "$ROOTFS_DIR" && "$platform" != "darwin" && "$__TargetOS" != "openharmony" ]]; then
         ROOTFS_DIR="$__RepoRootDir/.tools/rootfs/$__TargetArch"
         export ROOTFS_DIR
     fi

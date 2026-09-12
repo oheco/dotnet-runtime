@@ -1,0 +1,161 @@
+{
+  "format": 1,
+  "upstream_sources": {
+    "runtime": {
+      "repository": "https://github.com/dotnet/runtime",
+      "tag": "v10.0.12",
+      "commit": "4271d88e0aebf3d04f188f1334c2220d80555ef6"
+    },
+    "sdk": {
+      "repository": "https://github.com/dotnet/sdk",
+      "tag": "v10.0.401",
+      "commit": "32593ca81f8aae7b0d41c1a7198529c3365106b8"
+    }
+  },
+  "archives": [
+    {
+      "name": "dotnet-sdk-linux-arm64",
+      "version": "10.0.110",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.110/dotnet-sdk-10.0.110-linux-arm64.tar.gz",
+      "archive": "dotnet-sdk-10.0.110-linux-arm64.tar.gz",
+      "size": 232234721,
+      "sha512": "0d3bd6ef343dfbccdb065c3f12484a67af30772fd20b83f5a5267764acafcc67cc78297c3f54fd047b899075f1798ad269e3e4e864d9c0b7abd9f67fa9a43694",
+      "sha256": "0d81ab35ea0af63e89e182146b1e5c1d9c0978b33291867f74af6f95142d091d",
+      "purpose": "runtime build bootstrap",
+      "license": "MIT"
+    },
+    {
+      "name": "dotnet-sdk-linux-arm64",
+      "version": "10.0.302",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.302/dotnet-sdk-10.0.302-linux-arm64.tar.gz",
+      "archive": "dotnet-sdk-10.0.302-linux-arm64.tar.gz",
+      "size": 228422860,
+      "sha512": "9e409c14e00686d661c78fa4dd9ad0e4dcf695c328bd5ff777d05b4a9c34b42cf89b12573b92e9fb2f565dbe12016b4835f77c7d9a42b55a7494df21634cd5d6",
+      "sha256": "1c56318e4099990719f6369184e08bbad0248c09c5ad7532d2516e3cdfc3ab6d",
+      "purpose": "SDK build bootstrap",
+      "license": "MIT"
+    },
+    {
+      "name": "dotnet-sdk-linux-arm64",
+      "version": "10.0.401",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.401/dotnet-sdk-10.0.401-linux-arm64.tar.gz",
+      "archive": "dotnet-sdk-10.0.401-linux-arm64.tar.gz",
+      "size": 232558062,
+      "sha512": "58ace73ced6b4360754689a686bdfb8a317f4da6cb8bb416dbc7d0ba9f47e43e3c09f5eb1f1a1cfaacbd10df9558da4882bf2a5e195d6ab56a02c1f9f76102ed",
+      "sha256": "91d3d67f2ed065909bd2e1ba50a37192aff6df15178304939d5b55634d72da6a",
+      "purpose": "official acceptance comparison",
+      "license": "MIT"
+    },
+    {
+      "name": "openssl",
+      "version": "3.5.8",
+      "url": "https://github.com/openssl/openssl/releases/download/openssl-3.5.8/openssl-3.5.8.tar.gz",
+      "license": "Apache-2.0",
+      "archive": "openssl-3.5.8.tar.gz",
+      "size": 53213818,
+      "sha256": "a8f84a39918ec6415ce765d9b429d313ba97b8143169c172e734b9514464f5b2",
+      "build_options": [
+        "linux-aarch64",
+        "shared",
+        "no-module",
+        "no-tests",
+        "--openssldir=/etc/ssl",
+        "--libdir=lib"
+      ],
+      "local_changes": "No source patch. no-module embeds the legacy provider in libcrypto using the upstream STATIC_LEGACY implementation. Dependency compiler wrappers add an ELF ORIGIN RUNPATH for relocatable adjacent library dependencies."
+    },
+    {
+      "name": "icu",
+      "version": "78.3",
+      "url": "https://github.com/unicode-org/icu/releases/download/release-78.3/icu4c-78.3-sources.tgz",
+      "license": "Unicode-3.0",
+      "archive": "icu4c-78.3-sources.tgz",
+      "size": 27977255,
+      "sha256": "3a2e7a47604ba702f345878308e6fefeca612ee895cf4a5f222e7955fabfe0c0",
+      "local_changes": "Cross data link keeps OHOS CRT by using LDFLAGSICUDT=-nodefaultlibs, without -nostdlib. Dependency compiler wrappers add an ELF ORIGIN RUNPATH for relocatable adjacent library dependencies."
+    },
+    {
+      "name": "ohos-sdk-native",
+      "version": "26.0.0.35-Beta",
+      "url": "https://github.com/oheco/ohos-sdk/releases/download/26.0.0.35-Beta/native-ohos-arm64-26.0.0.35-Beta.zip",
+      "archive": "native-ohos-arm64-26.0.0.35-Beta.zip",
+      "sha256": "07baa4ab8fa2e240c0675560678beb452c679ef52fa7f6a302f362d9821c04cc",
+      "size": 949054580,
+      "purpose": "target headers, libraries, compiler runtime, native host LLVM tools",
+      "license": "Multiple; preserve NOTICE.txt"
+    },
+    {
+      "name": "ohos-sdk-toolchains",
+      "version": "26.0.0.35-Beta",
+      "url": "https://github.com/oheco/ohos-sdk/releases/download/26.0.0.35-Beta/toolchains-ohos-arm64-26.0.0.35-Beta.zip",
+      "archive": "toolchains-ohos-arm64-26.0.0.35-Beta.zip",
+      "sha256": "79ae088481f91c32c4f2f8e0feeddad75b6dba3b0dfc208684da86f5d0d02b34",
+      "size": 32165256,
+      "purpose": "native binary-sign-tool prerequisite",
+      "license": "Multiple; preserve NOTICE.txt"
+    },
+    {
+      "name": "dotnet-runtime-linux-arm64",
+      "version": "6.0.0",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Runtime/6.0.0/dotnet-runtime-6.0.0-linux-arm64.tar.gz",
+      "archive": "dotnet-runtime-6.0.0-linux-arm64.tar.gz",
+      "size": 28373916,
+      "sha512": "b0f0f2b4dc0a31b06cc3af541a3c44260317ca3a4414a5d50e6cf859d93821b3d2c2246baec9f96004aeb1eb0e353631283b11cf3acc134d4694f0ed71c9503d",
+      "sha256": "b04393f981ccb4face34d9e86731df4e1ee97106a5571d0c4cc0932c944718a6",
+      "license": "MIT",
+      "purpose": "upstream SDK build/test tooling only; excluded from OHOS distribution"
+    },
+    {
+      "name": "dotnet-runtime-linux-arm64",
+      "version": "7.0.0",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Runtime/7.0.0/dotnet-runtime-7.0.0-linux-arm64.tar.gz",
+      "archive": "dotnet-runtime-7.0.0-linux-arm64.tar.gz",
+      "size": 29764204,
+      "sha512": "a359402471c0c4f11f9e472ee6f8d7d165b57a29f132e01a95d3ee4020fa27f9c6ed5ede4b41786fd9bbad1491a4726c6f45d105c19695c0a1cc9a9d414ee614",
+      "sha256": "f23e32f764f54a08cc721aff4ec4885ee805cd2a8757570cd9a418ecc87ff79b",
+      "license": "MIT",
+      "purpose": "upstream SDK build/test tooling only; excluded from OHOS distribution"
+    },
+    {
+      "name": "dotnet-runtime-linux-arm64",
+      "version": "8.0.0",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Runtime/8.0.0/dotnet-runtime-8.0.0-linux-arm64.tar.gz",
+      "archive": "dotnet-runtime-8.0.0-linux-arm64.tar.gz",
+      "size": 29856067,
+      "sha512": "bb39fed4cff3a1a0a4e5084a517feeacb571700b8114b83b0b040f63f279d32eb9195d9b94cd60f8aa969b84adaad51694a2e26255177a30f40f50f634d29c21",
+      "sha256": "09ac683722a29d0dbe49e3c7604a641a787335a6b4e2adf5a0bd43575c665e78",
+      "license": "MIT",
+      "purpose": "upstream SDK build/test tooling only; excluded from OHOS distribution"
+    },
+    {
+      "name": "dotnet-runtime-linux-arm64",
+      "version": "9.0.0",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Runtime/9.0.0/dotnet-runtime-9.0.0-linux-arm64.tar.gz",
+      "archive": "dotnet-runtime-9.0.0-linux-arm64.tar.gz",
+      "size": 31797263,
+      "sha512": "4f9c2dd544af0b8540c16352b9f01f75f828b8e4e084057a300a4dec652fb3d6532906cdd4246399cc13f16b571b17575812ec2f9c297e27bbed678baf4b2fde",
+      "sha256": "96ab6bbe5fe4fc6cce4c24edd96e6333bd92be548f0c73f4357ff9f45e5a36b1",
+      "license": "MIT",
+      "purpose": "upstream SDK build/test tooling only; excluded from OHOS distribution"
+    },
+    {
+      "name": "microsoft.netcore.app.crossgen2.linux-arm64",
+      "version": "10.0.12",
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.netcore.app.crossgen2.linux-arm64/10.0.12/microsoft.netcore.app.crossgen2.linux-arm64.10.0.12.nupkg",
+      "archive": "microsoft.netcore.app.crossgen2.linux-arm64.10.0.12.nupkg",
+      "size": 11819994,
+      "sha256": "8c5efa2fb82f9edf76eae8d4229e521461c30c82c79a8ac0856d6677e5175619",
+      "license": "MIT",
+      "purpose": "Linux build tool for SDK ReadyToRun compilation only; excluded from OHOS distribution"
+    }
+  ],
+  "nuget_inputs_status": "Pending final target restore; record required package hashes before offline clean build.",
+  "linux_build_tools": {
+    "os": "openEuler 24.03 LTS-SP1 ARM64",
+    "clang": "17.0.6-30.oe2403sp1",
+    "cmake": "3.27.9",
+    "ninja": "1.11.1",
+    "python": "3.11.6",
+    "git": "2.43.0"
+  }
+}

@@ -14,9 +14,9 @@
          To work around these errors we remove the 'runtime.json' file completely on the source-built SDK.
          'ProcessFrameworkReferences' is responsible for either picking up the bundled pack (when targetting the source-built rid)
          or to add a 'runtime.<rid>.Microsoft.DotNet.ILCompiler' package for download. -->
-    <IncludeRuntimeJson Condition="'$(DotNetBuildSourceOnly)' == 'true'">false</IncludeRuntimeJson>
+    <IncludeRuntimeJson Condition="'$(DotNetBuildSourceOnly)' == 'true' or '$(TargetsOpenHarmony)' == 'true'">false</IncludeRuntimeJson>
     <!-- Set 'ExcludeLineupReference' to avoid package dependencies due to disabling 'runtime.json'. -->
-    <ExcludeLineupReference Condition="'$(DotNetBuildSourceOnly)' == 'true'">true</ExcludeLineupReference>
+    <ExcludeLineupReference Condition="'$(DotNetBuildSourceOnly)' == 'true' or '$(TargetsOpenHarmony)' == 'true'">true</ExcludeLineupReference>
   </PropertyGroup>
 
   <Target Name="AddBuildIntegrationFiles"

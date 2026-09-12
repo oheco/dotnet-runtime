@@ -117,7 +117,13 @@ CONFIG_DWORD_INFO(INTERNAL_GetAssemblyIfLoadedIgnoreRidMap, W("GetAssemblyIfLoad
 ///
 /// PE Loader
 ///
+#ifdef TARGET_OPENHARMONY
+// The host denies executable mappings of managed PE files. Reuse the existing
+// loader that copies sections into anonymous memory and applies their protection.
+RETAIL_CONFIG_DWORD_INFO(INTERNAL_PELoader_DisableMapping, W("PELoader_DisableMapping"), 1, "Disable file mapping when performing non-OS layout.")
+#else
 RETAIL_CONFIG_DWORD_INFO(INTERNAL_PELoader_DisableMapping, W("PELoader_DisableMapping"), 0, "Disable file mapping when performing non-OS layout.")
+#endif
 
 ///
 /// Conditional breakpoints
@@ -639,7 +645,9 @@ RETAIL_CONFIG_STRING_INFO(INTERNAL_LTTngConfig, W("LTTngConfig"), "Configuration
 // Executable code
 //
 // TODO: https://github.com/dotnet/runtime/issues/103465
-#ifdef TARGET_RISCV64
+// OpenHarmony denies executable file-backed mappings used by the W^X allocator.
+// Anonymous executable mappings are supported on the validated HarmonyOS PC host.
+#if defined(TARGET_RISCV64) || defined(TARGET_OPENHARMONY)
 RETAIL_CONFIG_DWORD_INFO(EXTERNAL_EnableWriteXorExecute, W("EnableWriteXorExecute"), 0, "Enable W^X for executable memory.");
 #else
 RETAIL_CONFIG_DWORD_INFO(EXTERNAL_EnableWriteXorExecute, W("EnableWriteXorExecute"), 1, "Enable W^X for executable memory.");

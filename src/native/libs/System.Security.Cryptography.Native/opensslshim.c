@@ -10,6 +10,7 @@
 
 #include "opensslshim.h"
 #include "pal_atomic.h"
+#include "pal_libraryloader.h"
 
 // Define pointers to all the used OpenSSL functions
 #define REQUIRED_FUNCTION(fn) TYPEOF(fn) fn##_ptr;
@@ -55,7 +56,7 @@ bool g_libSslUses32BitTime = false;
 
 static void DlOpen(const char* libraryName)
 {
-    void* libsslNew = dlopen(libraryName, RTLD_LAZY);
+    void* libsslNew = LoadLibraryRelativeToModule(libraryName, RTLD_LAZY);
 
     // check is someone else has opened and published libssl already
     if (!pal_atomic_cas_ptr(&libssl, libsslNew, NULL))

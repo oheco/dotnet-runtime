@@ -1,0 +1,2 @@
+# Preserve upstream notices byte-for-byte; their checksums are in licenses.json.
+licenses/* -whitespace

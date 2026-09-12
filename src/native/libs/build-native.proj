@@ -71,6 +71,20 @@
                               $(_IcuDir)/lib/*.dat" />
     </ItemGroup>
 
+    <ItemGroup Condition="'$(TargetsOpenHarmony)' == 'true'">
+      <_OpenHarmonyRuntimeDependency Include="$(OHOS_DEP_PREFIX)/lib/libcrypto.so.3;
+          $(OHOS_DEP_PREFIX)/lib/libssl.so.3;
+          $(OHOS_DEP_PREFIX)/lib/libicuuc.so.78;
+          $(OHOS_DEP_PREFIX)/lib/libicui18n.so.78;
+          $(OHOS_DEP_PREFIX)/lib/libicudata.so.78;
+          $(OHOS_CROSS_NDK)/aarch64-linux-ohos/libc++_shared.so" />
+    </ItemGroup>
+    <Error Condition="'$(TargetsOpenHarmony)' == 'true' and ('$(OHOS_DEP_PREFIX)' == '' or '$(OHOS_CROSS_NDK)' == '')"
+           Text="Set OHOS_DEP_PREFIX and OHOS_CROSS_NDK to the prepared, fixed OpenHarmony inputs." />
+    <Copy SourceFiles="@(_OpenHarmonyRuntimeDependency)"
+          DestinationFolder="$([MSBuild]::NormalizeDirectory('$(ArtifactsBinDir)', 'native', '$(_BuildNativeOutConfig)'))"
+          SkipUnchangedFiles="true" />
+
     <Copy SourceFiles="@(_IcuArtifacts)" DestinationFolder="$([MSBuild]::NormalizeDirectory('$(ArtifactsBinDir)', 'native', '$(_BuildNativeOutConfig)'))" SkipUnchangedFiles="true" />
 
     <!-- Use IgnoreStandardErrorWarningFormat because Arcade sets WarnAsError and we want to avoid upgrading compiler warnings to error in release branches -->
