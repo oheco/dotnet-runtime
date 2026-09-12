@@ -231,7 +231,9 @@ The .NET Foundation licenses this file to you under the MIT license.
     <ItemGroup>
       <LinkerArg Include="-gz=zlib" Condition="'$(CompressSymbols)' != 'false'" />
       <LinkerArg Include="-fuse-ld=$(LinkerFlavor)" Condition="'$(LinkerFlavor)' != ''" />
-      <LinkerArg Include="@(NativeLibrary)" />
+      <LinkerArg Include="@(NativeLibrary)" Condition="'$(_originalTargetOS)' != 'openharmony'" />
+      <!-- Keep SDK pack library paths intact when the installation root contains spaces. -->
+      <LinkerArg Include="@(NativeLibrary->'&quot;%(Identity)&quot;')" Condition="'$(_originalTargetOS)' == 'openharmony'" />
       <!-- Unix Exec invokes the shell: retain the literal ELF origin token. -->
       <LinkerArg Include="-Wl,-rpath,'$ORIGIN'" Condition="'$(_originalTargetOS)' == 'openharmony'" />
       <LinkerArg Include="--sysroot=&quot;$(SysRoot)&quot;" Condition="'$(SysRoot)' != '' and '$(_IsApplePlatform)' != 'true'" />
