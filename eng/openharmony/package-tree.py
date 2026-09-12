@@ -51,8 +51,10 @@ def executable(path):
 inventory = []
 args.archive.parent.mkdir(parents=True, exist_ok=True)
 with args.archive.open("xb") as destination:
-    with gzip.GzipFile(filename="", mode="wb", fileobj=destination, mtime=args.epoch) as compressed:
-        with tarfile.open(fileobj=compressed, mode="w|", format=tarfile.PAX_FORMAT) as archive:
+    with gzip.GzipFile(filename="", mode="wb", fileobj=destination, mtime=args.epoch, compresslevel=6) as compressed:
+        # The native host tar truncates PAX linkpath records to 100 bytes.
+        # Its GNU long-link support preserves complete SDK pack symlink targets.
+        with tarfile.open(fileobj=compressed, mode="w|", format=tarfile.GNU_FORMAT) as archive:
             for path in [root, *sorted(root.rglob("*"))]:
                 relative = path.relative_to(root).as_posix()
                 name = args.prefix if relative == "." else args.prefix + "/" + relative

@@ -21,11 +21,15 @@ dotnet build
 dotnet run
 dotnet publish -c Release -r openharmony-arm64 --self-contained true -o out-jit
 ./out-jit/hello
-dotnet publish -c Release -r openharmony-arm64 -p:PublishReadyToRun=true -o out-r2r
+dotnet publish -c Release -r openharmony-arm64 --self-contained true -p:PublishReadyToRun=true -o out-r2r
 ./out-r2r/hello
 dotnet publish -c Release -r openharmony-arm64 -p:PublishAot=true -o out-aot
 ./out-aot/hello
 ```
+
+依赖共享运行时的程序可用 `dotnet path/to/application.dll` 运行。若直接执行
+其 apphost，需设置 `DOTNET_ROOT`（或 `DOTNET_ROOT_ARM64`）为本 SDK 的
+安装根目录；自包含和 NativeAOT 发布目录无需该变量。
 
 生成的本机文件自动签名。发布目录中的依赖库应与程序一起分发；随包提供
 ICU、OpenSSL 和 C++ 运行库。NativeAOT 调试符号默认不压缩，以兼容当前宿主

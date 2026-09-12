@@ -119,7 +119,9 @@ network checks use the host proxy (`socks5://172.16.105.2:10808` by default).
 `verify-elf-layout.py <tree>` audits signatures, architecture and accidental
 foreign native binaries. Before signing, use `--allow-unsigned`.
 `package-tree.py --help` describes archive creation: execution modes are
-normalized while signed bytes and contained links are preserved. The extracted
+normalized while signed bytes and contained links are preserved. GNU tar
+long-link records are used because the validated host tar truncates PAX
+`linkpath` metadata. The extracted
 archive must also be tested from a relocated path on the native host.
 
 `accept-runtime.zsh <signed-runtime> <built-acceptance-dll-directory>
