@@ -13,5 +13,21 @@
     "file": "OpenSSL-LICENSE.txt",
     "size": 10175,
     "sha256": "7d5450cb2d142651b8afa315b5f238efc805dad827d91ba367d8516bc9d49e7a"
+  },
+  {
+    "file": "MSBuild-LICENSE",
+    "size": 1117,
+    "sha256": "9aebac42398b50e652a84a7b92d70e85cd1a9c8746558a743dc6cec11b8d7d3e",
+    "kinds": [
+      "sdk"
+    ]
+  },
+  {
+    "file": "MSBuild-THIRDPARTYNOTICES.txt",
+    "size": 1943,
+    "sha256": "cf828c217178e21c3da418193a49f4f2aaabf038524f53cabb14e8f45c400b3b",
+    "kinds": [
+      "sdk"
+    ]
   }
 ]

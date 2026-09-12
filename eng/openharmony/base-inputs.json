@@ -147,6 +147,17 @@
       "sha256": "8c5efa2fb82f9edf76eae8d4229e521461c30c82c79a8ac0856d6677e5175619",
       "license": "MIT",
       "purpose": "Linux build tool for SDK ReadyToRun compilation only; excluded from OHOS distribution"
+    },
+    {
+      "name": "dotnet-sdk-linux-arm64",
+      "version": "10.0.300",
+      "url": "https://builds.dotnet.microsoft.com/dotnet/Sdk/10.0.300/dotnet-sdk-10.0.300-linux-arm64.tar.gz",
+      "archive": "dotnet-sdk-10.0.300-linux-arm64.tar.gz",
+      "size": 228254077,
+      "sha512": "b503fe0cac8f8748d1ae67af40bc9157456cc0f93c8264e3bc52cc52a12fbbbc3a16e905d8528214f29337d7349859bb08de99b1e1406da92723b071b3f45ce5",
+      "sha256": "ae0c2168302a37d82358dcaa186c0f2d2839deab004b07ff5bacc62c32db1997",
+      "purpose": "MSBuild dependency source-build bootstrap",
+      "license": "MIT"
     }
   ],
   "nuget_inputs_status": "Pending final target restore; record required package hashes before offline clean build.",

@@ -46,6 +46,20 @@ EOF
 accept_run sdk-info "$accept_sdk/bin/dotnet" --info
 [[ $("$accept_sdk/bin/dotnet" --version) == 10.0.401 ]]
 
+# Exercise MSBuild's own worker pipes, independently of compiler-server fallback.
+mkdir -- "$accept_root/parallel build"
+for accept_child in first second; do
+    cat > "$accept_root/parallel build/$accept_child.proj" <<'EOF'
+<Project><Target Name="Build"><WriteLinesToFile File="$(MSBuildProjectName).result" Lines="worker completed" Overwrite="true" /></Target></Project>
+EOF
+done
+cat > "$accept_root/parallel build/Parent.proj" <<'EOF'
+<Project><ItemGroup><Child Include="first.proj;second.proj" /></ItemGroup><Target Name="Build"><MSBuild Projects="@(Child)" Targets="Build" BuildInParallel="true" /></Target></Project>
+EOF
+cd -- "$accept_root/parallel build"
+accept_run parallel-msbuild "$accept_sdk/bin/dotnet" msbuild Parent.proj /m:2 /nr:false /v:minimal
+[[ $(< first.result) == 'worker completed' && $(< second.result) == 'worker completed' ]]
+
 # User workflow, including replacement of an ELF already executed by the host.
 mkdir -- "$accept_root/project with spaces"
 cd -- "$accept_root/project with spaces"

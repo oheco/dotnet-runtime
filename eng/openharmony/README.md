@@ -41,6 +41,7 @@ Runtime builds use 10.0.110; SDK builds use 10.0.302. Run
 `prepare-tool-runtimes.py <sdk-bootstrap-root>` to install the pinned 6–9
 frameworks needed by upstream SDK build/test tooling. They are build inputs
 and are excluded from the target product.
+The SDK's vendored MSBuild dependency uses the separately fixed 10.0.300 SDK.
 
 `nuget-inputs-current.json` records the 699 captured upstream NuGet inputs
 and their licenses. A prepared cache can be verified and staged without
@@ -55,6 +56,12 @@ The manifest is an inventory of build dependencies, not an inventory of files
 shipped in the SDK. Keep the bootstrap input feed separate from target-built
 packages. NuGet caches containing an earlier locally built package of the same
 version must also be kept separate from a new build's cache.
+
+Before the first source build, populate the isolated `NUGET_PACKAGES` cache
+with `seed-nuget-cache.py <bootstrap-dotnet> <input-manifest> <verified-feed>
+<new-restore-project-directory> <new-log-file>`. Set `DOTNET_CLI_HOME` too.
+This verifies package archives again and restores only from the local feed,
+including the Arcade SDK that MSBuild resolves before normal project restore.
 
 ## Build order
 
@@ -76,7 +83,11 @@ version must also be kept separate from a new build's cache.
    <runtime-artifacts/packages/Release> --runtime-archive <combined-runtime-tar>
    --output <new-sdk-feed>` verifies the runtime/compiler CoreCLR hashes and
    combines the nine source-built target packs with fixed build inputs.
-6. With the SDK bootstrap selected, run
+6. Build the SDK fork's vendored MSBuild dependency using its separate fixed
+   manifest/feed and `eng/openharmony/build-msbuild.sh`. Its
+   `merge-msbuild-feed.py` creates a new SDK feed containing the six patched
+   MSBuild packages. See the SDK fork's README for commands and provenance.
+7. With the SDK bootstrap selected and the merged feed prepared, run
    `build-sdk-target.sh <sdk-source> <new-sdk-feed>`. The completed layout is
    `artifacts/bin/redist/Release/dotnet-installer` in the SDK source tree.
 
