@@ -100,6 +100,18 @@ Both require explicit bootstrap/cache/CLI-home settings and prepared inputs.
 The SDK fork's MSBuild input manifest can also be fetched using
 `fetch-nuget-inputs.py` before its separate offline dependency build.
 
+For the first released SDK, runtime/compiler binaries come from runtime commit
+`033589b2981f30e657b283f54a3697c5d124fc3b`. The generic NativeAOT MSBuild package
+also includes the library-path quoting fix from
+`8b7bf48c679f9e24078a693b84ce8f820f3c7da5`. To reproduce those inputs, build the
+baseline first, advance that checkout to the integration-fix commit, then run
+`repack-aot-build-integration.sh <built-runtime-source> <new-log-file>` with the
+same fixed runtime bootstrap/cache/feed settings. It refreshes the integration
+files and generic package while retaining the already built native binaries.
+Prepare a new SDK feed and empty cache afterward. BUILDINFO records the binary
+and build-integration commits separately. New ports may build all components
+from one later source commit instead.
+
 ## Native acceptance and packaging
 
 `stage-install.py <layout> <new-shared-directory> --kind sdk` copies a complete
