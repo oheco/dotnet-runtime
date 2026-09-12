@@ -1,3 +1,10 @@
+> HarmonyOS PC ARM64 port of .NET 10 LTS: Runtime **10.0.12-ohos.1**. See
+> [installation and usage](eng/openharmony/install-runtime.md),
+> [platform support and limits](eng/openharmony/PORTING.md), and the
+> [published Release](https://github.com/oheco/dotnet-runtime/releases/tag/v10.0.12-ohos.1).
+> Native C# builds, ReadyToRun and NativeAOT publishing are available in the
+> [companion SDK](https://github.com/oheco/dotnet-sdk).
+
 # .NET Runtime
 
 [![Build Status](https://dev.azure.com/dnceng-public/public/_apis/build/status/dotnet/runtime/runtime?branchName=main)](https://dev.azure.com/dnceng-public/public/_build/latest?definitionId=129&branchName=main)

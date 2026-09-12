@@ -1,0 +1,72 @@
+{
+  "result": "passed",
+  "environment": {
+    "os": "HarmonyOS PC",
+    "architecture": "arm64",
+    "api": 26,
+    "build": "7.0.0.105",
+    "kernel": "1.13"
+  },
+  "runtime": {
+    "version": "10.0.12-ohos.1",
+    "source_commit": "033589b2981f30e657b283f54a3697c5d124fc3b",
+    "default_branch": "ohos/10.0.12",
+    "release": "https://github.com/oheco/dotnet-runtime/releases/tag/v10.0.12-ohos.1",
+    "archive_size": 50841479,
+    "archive_sha256": "8917be58e7bc8f5fb0b8d71d2d397c92b1de3798c34cfbfa3ecebde105e9758d"
+  },
+  "sdk": {
+    "version": "10.0.401-ohos.1",
+    "source_commit": "5b59cdf24fe31f9aeb5ab17c40c44b87f09303a9",
+    "default_branch": "ohos/10.0.401",
+    "nativeaot_build_integration_source_commit": "8b7bf48c679f9e24078a693b84ce8f820f3c7da5",
+    "msbuild_source_commit": "73942a23652b1fdd00f0ad245867fc8935463941",
+    "build_kit_commit": "ea466c8a3a449db0943df0d338108014c3b4fef0",
+    "release": "https://github.com/oheco/dotnet-sdk/releases/tag/v10.0.401-ohos.1",
+    "archive_size": 338145713,
+    "archive_sha256": "f66f292f389e6cfb109fd60de0cf44caf535ac8e9cc9c16044524cfba8ecedaf"
+  },
+  "catalogue": {
+    "repository": "https://github.com/oheco/oheco-packages",
+    "commit": "e5fd4d5a1c439eb8c1729f384646d92f6d2d58f0",
+    "pages_run": "https://github.com/oheco/oheco-packages/actions/runs/34686799453",
+    "pages_result": "success",
+    "index": "https://oheco.github.io/oheco-packages/index/v3/index.json",
+    "compatibility_index": "https://oheco.github.io/oheco-packages/index/v2/index.json",
+    "public_package_objects_match": true,
+    "all_artifacts_verified": true
+  },
+  "native_installation": {
+    "client": "oo 0.5.0 (ohos/arm64)",
+    "isolated_root_with_spaces": true,
+    "checks": [
+      "oo update through official v3 index",
+      "install dotnet-runtime and dotnet-sdk",
+      "normal and versioned command entries",
+      "native project creation and build",
+      "standalone runtime executes SDK-built DLL",
+      "self-contained JIT publish/run",
+      "ReadyToRun publish/run",
+      "NativeAOT publish/run",
+      "remove both versions and verify all command links removed"
+    ],
+    "log_sha256": "89973a6737dd9e17464feb564b83304c46a4173a77398caca8dd4c1f91ee82d2"
+  },
+  "native_evidence": {
+    "runtime-release-native-1.log": "66c9341724cdb2ebf87134e54432bcbeeaf82ea0153201b681240f92569df2fa",
+    "runtime-release-relocation-1.log": "0a3ab9a7091905cf1f196f00f90e56650f3a21ae43130c9ad37282fe198c637e",
+    "sdk-release-native-2.log": "60c18f68c00b482ae3c1cfe7630c59edcdbf86a0e8302d76fd2b3bdb62e71a77",
+    "sdk-release-relocation-3.log": "8da0649150e46559d0bb3e15963233f0e03990ccd76fd5df011e7f5c6fdfa38a",
+    "official-index-native-1.log": "89973a6737dd9e17464feb564b83304c46a4173a77398caca8dd4c1f91ee82d2",
+    "catalogue-verify-artifacts-1.log": "10d9c65f50a97326938628bdd62ee257d6b81661211f8e0b3c8966be30183b34"
+  },
+  "limitations": [
+    "Only HarmonyOS PC ARM64 API26 is the validated host",
+    "No GUI, workloads, Windows Desktop or ASP.NET Core runtime",
+    "Kerberos/GSSAPI disabled",
+    "NativeAOT retains upstream dynamic-code/reflection and Unix named-mutex restrictions",
+    "Third-party Linux native packages require their own OpenHarmony adaptation",
+    "Direct framework-dependent apphosts need DOTNET_ROOT; dotnet application.dll is supported",
+    "SDK builds need binary-sign-tool; NativeAOT also needs HarmonyOS LLVM tools"
+  ]
+}

@@ -12,7 +12,7 @@ command -v binary-sign-tool >/dev/null
 command -v clang >/dev/null
 mkdir -p -- "$index_root/t" "$index_root/cli" "$index_root/packages"
 export OHECO_ROOT="$index_root/installation with spaces"
-export OHECO_INDEX_URL=https://oheco.github.io/oheco-packages/index/v2/index.json
+export OHECO_INDEX_URL=${DOTNET_OHOS_INDEX_URL:-https://oheco.github.io/oheco-packages/index/v3/index.json}
 export OHECO_NO_AUTO_UPDATE=1
 export DOTNET_OHOS_TMPDIR="$index_root/t" TMPDIR="$index_root/t"
 export DOTNET_CLI_HOME="$index_root/cli" NUGET_PACKAGES="$index_root/packages"

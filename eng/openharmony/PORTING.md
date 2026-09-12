@@ -90,16 +90,19 @@ GUI applications, workloads, ASP.NET Core and Windows Desktop runtime packs
 are outside this delivery. Mobile application sandbox support is not inferred
 from HarmonyOS PC validation.
 
-## Current validation status
+## Released validation status
 
-The development host is HarmonyOS PC ARM64, API 26, build 7.0.0.105,
-kernel 1.13. Signed native JIT, NativeAOT and ReadyToRun probes pass, including
-the specific timezone and memory-mapping adaptations. Complete CoreCLR framework acceptance and native ILC/linker execution also
-pass. The development SDK also passed complete native acceptance, including
-parallel MSBuild, repeated self-contained/AOT publication, JIT/R2R/AOT platform
-behavior and a real proxied NuGet restore/build/run. MSBuild's target-only pipe
-fix uses the configured private temporary directory. NativeAOT publishes carry
-their ICU/OpenSSL dependencies and use uncompressed symbols with host LLVM.
-Clean offline reproduction, release publication and formal catalogue
-installation remain pending. This document is not a release
-acceptance report; consult the final release's recorded checks and hashes.
+Runtime 10.0.12-ohos.1 and SDK 10.0.401-ohos.1 are published. Fresh offline
+builds, signed native acceptance and archive relocation passed on HarmonyOS
+PC ARM64 API 26, build 7.0.0.105, kernel 1.13. The SDK was verified from an
+installation path with spaces, including parallel MSBuild, incremental builds,
+repeated self-contained/NativeAOT publication, broad JIT/R2R/AOT behavior and
+real NuGet restore/build/run. GNU tar metadata preserves long pack symlinks;
+NativeAOT quotes the SDK's static-library paths for Unix linking.
+
+The catalogue's complete artifact validation and Pages deployment passed.
+Native oo 0.5.0 then downloaded both packages through the official v3 index,
+verified ordinary/versioned commands and JIT/R2R/AOT publication, and removed
+both packages from an isolated installation directory with spaces. Public v2
+compatibility index entries were also checked. Exact source commits, artifact
+hashes, deployment and evidence are recorded in [VALIDATION.json](VALIDATION.json).

@@ -141,7 +141,9 @@ archive must also be tested from a relocated path on the native host.
 managed acceptance application. The package itself does not contain test files.
 
 After immutable Release publication and Pages deployment, run
-`accept-index.zsh <new-app-private-directory>` on the host. It downloads both
+`accept-index.zsh <new-app-private-directory>` on the host with oo 0.5.0 or
+later. It uses the official v3 index; `DOTNET_OHOS_INDEX_URL` can select the
+official v2 compatibility index for older clients. It downloads both
 packages through the official index, tests ordinary and versioned command links,
 JIT/R2R/AOT publication, a path containing spaces, and uninstallation.
 
