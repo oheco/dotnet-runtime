@@ -115,11 +115,12 @@
       "archive": "coverlet.console/6.0.4/coverlet.console.6.0.4.nupkg",
       "size": 1746281,
       "sha256": "48ad640bc67eb52e0f95c2f80f6368b24088033c5792e834d7ec4ae2ae543217",
-      "source": "",
+      "source": "https://api.nuget.org/v3/index.json",
       "license": {
         "type": "expression",
         "value": "MIT"
-      }
+      },
+      "url": "https://api.nuget.org/v3-flatcontainer/coverlet.console/6.0.4/coverlet.console.6.0.4.nupkg"
     },
     {
       "id": "coverlet.console",
@@ -127,11 +128,12 @@
       "archive": "coverlet.console/6.0.4/coverlet.console.nupkg",
       "size": 1746281,
       "sha256": "48ad640bc67eb52e0f95c2f80f6368b24088033c5792e834d7ec4ae2ae543217",
-      "source": "",
+      "source": "https://api.nuget.org/v3/index.json",
       "license": {
         "type": "expression",
         "value": "MIT"
-      }
+      },
+      "url": "https://api.nuget.org/v3-flatcontainer/coverlet.console/6.0.4/coverlet.console.6.0.4.nupkg"
     },
     {
       "id": "DiffEngine",
@@ -199,11 +201,12 @@
       "archive": "dotnet-reportgenerator-globaltool/5.4.3/dotnet-reportgenerator-globaltool.5.4.3.nupkg",
       "size": 2509376,
       "sha256": "1287e008e314a2fcd6b6ed92e5326870cc3f964aaee04f590846501074b724f1",
-      "source": "",
+      "source": "https://api.nuget.org/v3/index.json",
       "license": {
         "type": "expression",
         "value": "Apache-2.0"
-      }
+      },
+      "url": "https://api.nuget.org/v3-flatcontainer/dotnet-reportgenerator-globaltool/5.4.3/dotnet-reportgenerator-globaltool.5.4.3.nupkg"
     },
     {
       "id": "dotnet-reportgenerator-globaltool",
@@ -211,11 +214,12 @@
       "archive": "dotnet-reportgenerator-globaltool/5.4.3/dotnet-reportgenerator-globaltool.nupkg",
       "size": 2509376,
       "sha256": "1287e008e314a2fcd6b6ed92e5326870cc3f964aaee04f590846501074b724f1",
-      "source": "",
+      "source": "https://api.nuget.org/v3/index.json",
       "license": {
         "type": "expression",
         "value": "Apache-2.0"
-      }
+      },
+      "url": "https://api.nuget.org/v3-flatcontainer/dotnet-reportgenerator-globaltool/5.4.3/dotnet-reportgenerator-globaltool.5.4.3.nupkg"
     },
     {
       "id": "dotnet-user-jwts",
@@ -2471,11 +2475,12 @@
       "archive": "microsoft.dotnet.xharness.cli/11.0.0-prerelease.26413.1/Microsoft.DotNet.XHarness.CLI.nupkg",
       "size": 41294926,
       "sha256": "3f4e2d5c698766c9e3cae5768520b668c84fb9390f74dcea1825f34fd8b04a75",
-      "source": "",
+      "source": "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json",
       "license": {
         "type": "expression",
         "value": "MIT"
-      }
+      },
+      "url": "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/flat2/microsoft.dotnet.xharness.cli/11.0.0-prerelease.26413.1/microsoft.dotnet.xharness.cli.11.0.0-prerelease.26413.1.nupkg"
     },
     {
       "id": "Microsoft.DotNet.XHarness.CLI",
@@ -2483,11 +2488,12 @@
       "archive": "microsoft.dotnet.xharness.cli/11.0.0-prerelease.26413.1/microsoft.dotnet.xharness.cli.11.0.0-prerelease.26413.1.nupkg",
       "size": 41294926,
       "sha256": "3f4e2d5c698766c9e3cae5768520b668c84fb9390f74dcea1825f34fd8b04a75",
-      "source": "",
+      "source": "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/index.json",
       "license": {
         "type": "expression",
         "value": "MIT"
-      }
+      },
+      "url": "https://pkgs.dev.azure.com/dnceng/public/_packaging/dotnet-eng/nuget/v3/flat2/microsoft.dotnet.xharness.cli/11.0.0-prerelease.26413.1/microsoft.dotnet.xharness.cli.11.0.0-prerelease.26413.1.nupkg"
     },
     {
       "id": "Microsoft.DotNet.XliffTasks",
@@ -4547,11 +4553,12 @@
       "archive": "microsoft.visualstudio.slngen.tool/12.0.15/Microsoft.VisualStudio.SlnGen.Tool.nupkg",
       "size": 934789,
       "sha256": "fc8959d70ec7487fd02bac17b5066f9b57b035734fc4efcf7ffdbe597abe4df4",
-      "source": "",
+      "source": "https://api.nuget.org/v3/index.json",
       "license": {
         "type": "file",
         "value": "LICENSE.txt"
-      }
+      },
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.visualstudio.slngen.tool/12.0.15/microsoft.visualstudio.slngen.tool.12.0.15.nupkg"
     },
     {
       "id": "Microsoft.VisualStudio.SlnGen.Tool",
@@ -4559,11 +4566,12 @@
       "archive": "microsoft.visualstudio.slngen.tool/12.0.15/microsoft.visualstudio.slngen.tool.12.0.15.nupkg",
       "size": 934789,
       "sha256": "fc8959d70ec7487fd02bac17b5066f9b57b035734fc4efcf7ffdbe597abe4df4",
-      "source": "",
+      "source": "https://api.nuget.org/v3/index.json",
       "license": {
         "type": "file",
         "value": "LICENSE.txt"
-      }
+      },
+      "url": "https://api.nuget.org/v3-flatcontainer/microsoft.visualstudio.slngen.tool/12.0.15/microsoft.visualstudio.slngen.tool.12.0.15.nupkg"
     },
     {
       "id": "Microsoft.VisualStudio.SolutionPersistence",

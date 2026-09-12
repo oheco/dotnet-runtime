@@ -68,4 +68,12 @@ for release_project in \
 done
 release_subset clr.nativecorelib /p:UseBootstrap=true
 release_subset packs.product -pack /p:UseBootstrap=true
+# These SDK inputs are built by bootstrap/tool references, but packs.product
+# does not package them. Pack their normal projects explicitly.
+for release_project in \
+    src/libraries/Microsoft.NETCore.Platforms/src/Microsoft.NETCore.Platforms.csproj \
+    src/tools/illink/src/ILLink.Tasks/ILLink.Tasks.csproj; do
+    release_label="pack-$(basename -- "$release_project")"
+    release_run "$release_label" "$DOTNET_INSTALL_DIR/dotnet" pack "$release_project" "${release_managed_options[@]}"
+done
 printf 'Runtime packages built. SDK composition, native signing and acceptance remain required.\n'

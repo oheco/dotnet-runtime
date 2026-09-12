@@ -1,9 +1,8 @@
 # OpenHarmony build and acceptance kit
 
 The source already contains the platform adaptation. These helpers use the
-normal runtime/SDK build graphs and record the extra target inputs. A complete
-fresh release build is still being validated; individual successful development
-builds do not establish a finished release.
+normal runtime/SDK build graphs and record the extra target inputs. Release build inputs are pinned by archive hashes and source commits.
+Consult each Release for its build provenance and native acceptance records.
 
 ## Build environment and inputs
 
@@ -44,10 +43,11 @@ and are excluded from the target product.
 The SDK's vendored MSBuild dependency uses the separately fixed 10.0.300 SDK.
 
 `nuget-inputs-current.json` records the 699 captured upstream NuGet inputs
-and their licenses. A prepared cache can be verified and staged without
-network access:
+and their licenses. Fetch them as a separate preparation step through the configured proxy, then
+verify and stage the cache without network access:
 
 ```sh
+python3 fetch-nuget-inputs.py nuget-inputs-current.json /path/to/prepared-nuget-cache
 python3 nuget-inputs.py stage /path/to/prepared-nuget-cache \
   nuget-inputs-current.json --destination /path/to/local-feed
 ```
@@ -91,8 +91,14 @@ including the Arcade SDK that MSBuild resolves before normal project restore.
    `build-sdk-target.sh <sdk-source> <new-sdk-feed>`. The completed layout is
    `artifacts/bin/redist/Release/dotnet-installer` in the SDK source tree.
 
-Detailed release orchestration and a fresh-build validation report will be
-added after the end-to-end native SDK checks pass.
+For a new runtime checkout, `build-runtime-release.sh <source> <new-log-directory>`
+executes the complete release sequence, including separate ILLink and RID graph
+packing. For a fresh SDK checkout and merged feed, use
+`build-sdk-release.sh <source> <feed> <new-log-file>`. The wrappers pin the build
+stamp and shipping versions; the SDK wrapper records its actual Git commit.
+Both require explicit bootstrap/cache/CLI-home settings and prepared inputs.
+The SDK fork's MSBuild input manifest can also be fetched using
+`fetch-nuget-inputs.py` before its separate offline dependency build.
 
 ## Native acceptance and packaging
 
@@ -115,6 +121,15 @@ foreign native binaries. Before signing, use `--allow-unsigned`.
 `package-tree.py --help` describes archive creation: execution modes are
 normalized while signed bytes and contained links are preserved. The extracted
 archive must also be tested from a relocated path on the native host.
+
+`accept-runtime.zsh <signed-runtime> <built-acceptance-dll-directory>
+<new-app-private-directory>` validates the standalone runtime using the same
+managed acceptance application. The package itself does not contain test files.
+
+After immutable Release publication and Pages deployment, run
+`accept-index.zsh <new-app-private-directory>` on the host. It downloads both
+packages through the official index, tests ordinary and versioned command links,
+JIT/R2R/AOT publication, a path containing spaces, and uninstallation.
 
 The SDK owns the `dotnet` command; the standalone runtime owns `dotnet-runtime`.
 Both launch their own root muxer and establish a usable application-private
